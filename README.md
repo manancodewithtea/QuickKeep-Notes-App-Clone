@@ -36,5 +36,3 @@ Option to pin notes
 Add dark mode theme
 
 Sync with a backend database
-
-📜 License
