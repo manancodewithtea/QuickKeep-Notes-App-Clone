@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f3f4f6;
+        }
+
+        #header {
+            background-color:#f59e0b;
+            height: 30px;
+            padding: 25px;
+            display: flex;
+            align-items: center;
+        }
+
+        #btncontainer {
+            display: flex;
+            justify-content: flex-end;
+
+        }
+
+        #btn {
+            background-color: #ffffff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            
+            
+            /* smooth animation */
+        }
+
+        #btn:hover {
+            transform: scale(.9);
+            background-color: #22c55e;
+            /* decrease size by 0.9 */
+        }
+
+        .note {
+            display: inline-block;
+            vertical-align: top;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 10px;
+            margin: 10px;
+            width: 220px;
+            min-height: 100px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        /* Operations (buttons) */
+        .operations {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+
+        .operations button {
+            border: none;
+            cursor: pointer;
+            margin-left: 5px;
+            padding: 5px 7px;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 12px;
+        }
+
+        .edit {
+            background: green;
+        }
+
+        .delete {
+            background: red;
+        }
+
+        .edit:hover,
+        .delete:hover {
+            /* opacity: 0.8; */
+            transform: scale(1.2);
+            background-color: rgb(182, 88, 88);
+        }
+
+        
+        textarea {
+            width: 100%;
+            height: 80px;
+            border: none;
+            outline: none;
+            resize: none;
+            font-size: 14px;
+        }
+
+        /* Main note text */
+        .main {
+            font-size: 14px;
+            margin-top: 5px;
+            word-wrap: break-word;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+    <title>Note Pad clone</title>
+</head>
+
+<body>
+    <div id="header">
+        <h1><i class="fa-solid fa-note-sticky"></i>Abdul’s QuickKeep</h1>
+    </div>
+    <div id="btncontainer"><button id="btn" class="btn"><i class="fa-solid fa-location-arrow"></i>Add Notes</button>
+    </div>
+
+    <!-- <div class="note">
+        <div class="operations">
+            <button class="edit"><i class="fa-solid fa-pen-to-square"></i></button>
+             <button class="delete"><i class="fa-solid fa-trash"></i></button>
+        </div>
+         <div class="main"> 
+        <textarea class=""></textarea>
+      </div>
+    </div> -->
+
+
+    <SCript>
+        const addbtn = document.querySelector('#btn')
+        const LSData = () => {
+            const textareaData = document.querySelectorAll('textarea');
+            const notesArr = [];
+            textareaData.forEach((note) => {
+            return notesArr.push(note.value);
+            })
+             console.log(notesArr);
+            localStorage.setItem('notesArr',JSON.stringify(notesArr));
+        }
+        const NewNotesAdd = (text = '') => {
+            const note = document.createElement('div');
+            note.classList.add('note')
+            const htmlData = `  <div class="operations">
+            <button class="edit"><i class="fa-solid fa-pen-to-square"></i></button>
+             <button class="delete"><i class="fa-solid fa-trash"></i></button>
+        </div>
+         <div class="main ${text ? '' : 'hidden'}">  </div>
+        <textarea class=" ${text ? 'hidden' : ''}"></textarea>
+        `
+            note.insertAdjacentHTML('afterbegin', htmlData);
+
+            //Getting refrences 
+            const editbtn = note.querySelector('.edit')
+            const deletebtn = note.querySelector('.delete')
+            const main = note.querySelector('.main')
+            const textare = note.querySelector('textarea')
+
+            //to show notes text on screen after using local storage
+
+             textare.value = text;
+             main.innerHTML = text;
+
+            //for deleting buton working
+            deletebtn.addEventListener('click', () => {
+                note.remove();
+                 LSData(); 
+
+            })
+
+            //toggle using edit button
+     
+
+            editbtn.addEventListener('click', () => {
+                main.classList.toggle('hidden')
+                textare.classList.toggle('hidden')
+            })
+            textare.addEventListener('change', (event) => {
+                const value = event.target.value;
+                main.innerHTML = value;
+
+                LSData();
+            });
+
+            
+
+            document.body.appendChild(note)
+        }
+        //getting data back from local storage
+        const notesArr = JSON.parse(localStorage.getItem('notesArr'));
+        if(notesArr){
+            notesArr.forEach((note) => NewNotesAdd(note));
+        }
+
+        addbtn.addEventListener('click', () => NewNotesAdd());
+    </SCript>
+</body>
+
+</html>
