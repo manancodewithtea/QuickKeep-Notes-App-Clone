@@ -38,4 +38,3 @@ Add dark mode theme
 Sync with a backend database
 
 📜 License
-This project is open-source and available under the MIit
