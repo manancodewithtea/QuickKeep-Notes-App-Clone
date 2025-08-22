@@ -29,6 +29,7 @@ cd quickkeep-notes
 Open index.html in your browser.
 
 ##🌟Future Improvements
+
 Add search functionality for notes
 
 Option to pin notes
